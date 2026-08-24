@@ -6,11 +6,11 @@ def main(page: ft.Page):
     page.title = "CyberDesk Tools"
     page.theme_mode = ft.ThemeMode.DARK
     page.padding = 20
-    page.vertical_alignment = ft.MainAxisAlignment.CENTER
+    page.vertical_alignment = ft.MainAxisAlignment.START
     page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
 
     # --- Утилита 1: Генератор паролей ---
-    pass_output = ft.TextField(label="Сгенерированный пароль", read_only=True, width=280)
+    pass_output = ft.TextField(label="Сгенерированный пароль", read_only=True, width=300)
     
     def generate_password(e):
         chars = string.ascii_letters + string.digits + "!@#$%&*"
@@ -18,31 +18,20 @@ def main(page: ft.Page):
         pass_output.value = pwd
         page.update()
 
-    pass_btn = ft.ElevatedButton("Сгенерировать пароль", on_click=generate_password)
+    pass_btn = ft.ElevatedButton("⚡ Сгенерировать пароль", on_click=generate_password)
 
-    # --- Утилита 2: Встроенный мини-браузер (Web View) ---
-    url_input = ft.TextField(label="Введите URL (например, https://google.com)", value="https://google.com", width=280)
+    # --- Утилита 2: Веб-клиент (открытие ссылок) ---
+    url_input = ft.TextField(label="Введите URL", value="https://google.com", width=300)
     
-    # WebView для отображения сайтов внутри приложения
-    web_view = ft.WebView(
-        url="https://google.com",
-        expand=True,
-        on_page_started=lambda e: print("Загрузка..."),
-        on_page_ended=lambda e: print("Загружено!"),
-    )
-
-    def load_site(e):
+    def open_link(e):
         target_url = url_input.value.strip()
         if not target_url.startswith("http"):
             target_url = "https://" + target_url
-        web_view.url = target_url
-        page.update()
+        page.launch_url(target_url)
 
-    go_btn = ft.ElevatedButton("Открыть сайт", on_click=load_site)
+    web_btn = ft.ElevatedButton("🌐 Открыть в браузере", on_click=open_link)
 
-    # --- Навигация по вкладкам (Главная / Инструменты / Браузер) ---
-    
-    # Содержимое вкладки "Главная / Утилиты"
+    # --- Вкладка 1: Инструменты ---
     tab_tools = ft.Column(
         [
             ft.Text("⚡ CyberDesk Dashboard", size=22, weight=ft.FontWeight.BOLD, color=ft.colors.CYAN_ACCENT),
@@ -54,20 +43,23 @@ def main(page: ft.Page):
         alignment=ft.MainAxisAlignment.START,
         horizontal_alignment=ft.CrossAxisAlignment.CENTER,
         spacing=15,
-        scroll=ft.ScrollMode.AUTO
     )
 
-    # Содержимое вкладки "Браузер"
+    # --- Вкладка 2: Браузер-клиент ---
     tab_browser = ft.Column(
         [
-            ft.Row([url_input, go_btn], alignment=ft.MainAxisAlignment.CENTER),
-            ft.Container(content=web_view, expand=True, border_radius=10, border=ft.border.all(1, ft.colors.CYAN))
+            ft.Text("🌐 Веб-Переходник", size=22, weight=ft.FontWeight.BOLD, color=ft.colors.CYAN_ACCENT),
+            ft.Divider(),
+            ft.Text("Введите адрес для быстрого перехода:"),
+            url_input,
+            web_btn,
         ],
-        expand=True,
-        spacing=10
+        alignment=ft.MainAxisAlignment.START,
+        horizontal_alignment=ft.CrossAxisAlignment.CENTER,
+        spacing=15,
     )
 
-    # Основные вкладки приложения
+    # Навигационные вкладки
     tabs = ft.Tabs(
         selected_index=0,
         animation_duration=300,
