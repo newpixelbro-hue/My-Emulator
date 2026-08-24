@@ -25,9 +25,13 @@ def main(page: ft.Page):
     
     def open_link(e):
         target_url = url_input.value.strip()
-        if not target_url.startswith("http"):
+        if not target_url:
+            return
+        if not target_url.startswith("http://") and not target_url.startswith("https://"):
             target_url = "https://" + target_url
-        page.launch_url(target_url)
+            
+        # Запуск с флагом для Android
+        page.launch_url(target_url, web_custom_tab=True)
 
     web_btn = ft.ElevatedButton("🌐 Открыть в браузере", on_click=open_link)
 
@@ -70,7 +74,7 @@ def main(page: ft.Page):
             content_area.content = view_browser
         page.update()
 
-    # Нижняя навигация (вместо кривых вкладок)
+    # Нижняя навигация
     page.navigation_bar = ft.NavigationBar(
         selected_index=0,
         on_change=on_nav_change,
