@@ -4,10 +4,10 @@ import string
 
 def main(page: ft.Page):
     page.title = "CyberDesk Tools"
-    page.theme_mode = ft.ThemeMode.DARK
+    page.theme_mode = "dark"
     page.padding = 20
-    page.vertical_alignment = ft.MainAxisAlignment.START
-    page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
+    page.vertical_alignment = "start"
+    page.horizontal_alignment = "center"
 
     # --- Утилита 1: Генератор паролей ---
     pass_output = ft.TextField(label="Сгенерированный пароль", read_only=True, width=300)
@@ -34,28 +34,28 @@ def main(page: ft.Page):
     # --- Вкладка 1: Инструменты ---
     tab_tools = ft.Column(
         [
-            ft.Text("⚡ CyberDesk Dashboard", size=22, weight=ft.FontWeight.BOLD, color=ft.colors.CYAN_ACCENT),
+            ft.Text("⚡ CyberDesk Dashboard", size=22, weight="bold", color="cyanAccent"),
             ft.Divider(),
             ft.Text("Генератор безопасных паролей:", size=14),
             pass_output,
             pass_btn,
         ],
-        alignment=ft.MainAxisAlignment.START,
-        horizontal_alignment=ft.CrossAxisAlignment.CENTER,
+        alignment="start",
+        horizontal_alignment="center",
         spacing=15,
     )
 
     # --- Вкладка 2: Браузер-клиент ---
     tab_browser = ft.Column(
         [
-            ft.Text("🌐 Веб-Переходник", size=22, weight=ft.FontWeight.BOLD, color=ft.colors.CYAN_ACCENT),
+            ft.Text("🌐 Веб-Переходник", size=22, weight="bold", color="cyanAccent"),
             ft.Divider(),
             ft.Text("Введите адрес для быстрого перехода:"),
             url_input,
             web_btn,
         ],
-        alignment=ft.MainAxisAlignment.START,
-        horizontal_alignment=ft.CrossAxisAlignment.CENTER,
+        alignment="start",
+        horizontal_alignment="center",
         spacing=15,
     )
 
@@ -67,12 +67,12 @@ def main(page: ft.Page):
         tabs=[
             ft.Tab(
                 text="Утилиты",
-                icon=ft.icons.DASHBOARD,
+                icon="dashboard",
                 content=ft.Container(content=tab_tools, padding=10)
             ),
             ft.Tab(
                 text="Браузер",
-                icon=ft.icons.LANGUAGE,
+                icon="language",
                 content=ft.Container(content=tab_browser, padding=10)
             ),
         ],
