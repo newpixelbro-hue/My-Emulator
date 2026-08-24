@@ -20,7 +20,7 @@ def main(page: ft.Page):
 
     pass_btn = ft.ElevatedButton("⚡ Сгенерировать пароль", on_click=generate_password)
 
-    # --- Утилита 2: Веб-клиент (открытие ссылок) ---
+    # --- Утилита 2: Веб-клиент ---
     url_input = ft.TextField(label="Введите URL", value="https://google.com", width=300)
     
     def open_link(e):
@@ -31,9 +31,9 @@ def main(page: ft.Page):
 
     web_btn = ft.ElevatedButton("🌐 Открыть в браузере", on_click=open_link)
 
-    # --- Вкладка 1: Инструменты ---
-    tab_tools = ft.Column(
-        [
+    # --- Экран 1: Утилиты ---
+    view_tools = ft.Column(
+        controls=[
             ft.Text("⚡ CyberDesk Dashboard", size=22, weight=ft.FontWeight.BOLD, color=ft.Colors.CYAN_ACCENT),
             ft.Divider(),
             ft.Text("Генератор безопасных паролей:", size=14),
@@ -45,9 +45,9 @@ def main(page: ft.Page):
         spacing=15,
     )
 
-    # --- Вкладка 2: Браузер-клиент ---
-    tab_browser = ft.Column(
-        [
+    # --- Экран 2: Браузер ---
+    view_browser = ft.Column(
+        controls=[
             ft.Text("🌐 Веб-Переходник", size=22, weight=ft.FontWeight.BOLD, color=ft.Colors.CYAN_ACCENT),
             ft.Divider(),
             ft.Text("Введите адрес для быстрого перехода:"),
@@ -59,25 +59,27 @@ def main(page: ft.Page):
         spacing=15,
     )
 
-    # Навигационные вкладки
-    tabs = ft.Tabs(
+    # Контейнер для смены контента
+    content_area = ft.Container(content=view_tools, padding=10, expand=True)
+
+    # Логика переключения экранов через нижнее меню
+    def on_nav_change(e):
+        if e.control.selected_index == 0:
+            content_area.content = view_tools
+        elif e.control.selected_index == 1:
+            content_area.content = view_browser
+        page.update()
+
+    # Нижняя навигация (вместо кривых вкладок)
+    page.navigation_bar = ft.NavigationBar(
         selected_index=0,
-        animation_duration=300,
-        expand=True,
-        tabs=[
-            ft.Tab(
-                label="Утилиты",
-                icon=ft.Icons.DASHBOARD,
-                content=ft.Container(content=tab_tools, padding=10)
-            ),
-            ft.Tab(
-                label="Браузер",
-                icon=ft.Icons.LANGUAGE,
-                content=ft.Container(content=tab_browser, padding=10)
-            ),
+        on_change=on_nav_change,
+        destinations=[
+            ft.NavigationBarDestination(icon=ft.Icons.DASHBOARD, label="Утилиты"),
+            ft.NavigationBarDestination(icon=ft.Icons.LANGUAGE, label="Браузер"),
         ],
     )
 
-    page.add(tabs)
+    page.add(content_area)
 
 ft.app(target=main)
